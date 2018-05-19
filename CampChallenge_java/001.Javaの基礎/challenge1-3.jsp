@@ -14,7 +14,7 @@
     <body>
         <%
             int i = 6;
-            int j = 2;
+            final int j = 2;
             
             int num1 = i+j;
             int num2 = i-j;
