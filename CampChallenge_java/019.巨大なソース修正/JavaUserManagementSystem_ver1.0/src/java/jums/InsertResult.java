@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 /**
  * insertresultと対応するサーブレット
@@ -31,16 +33,24 @@ public class InsertResult extends HttpServlet {
         
         //セッションスタート
         HttpSession session = request.getSession();
+        UserDataBeans udb = (UserDataBeans)session.getAttribute("udb");
         
         try{
+            String accesschk = request.getParameter("ac");
+            if(accesschk ==null || (Integer)session.getAttribute("ac")!=Integer.parseInt(accesschk)){
+                throw new Exception("不正なアクセスです");
+            }
+            //生年月日をDate型に変換
+            Calendar birthday = Calendar.getInstance();
+            birthday.set(udb.getYear(),udb.getMonth()-1,udb.getDay());
+            
             //ユーザー情報に対応したJavaBeansオブジェクトに格納していく
             UserDataDTO userdata = new UserDataDTO();
-            userdata.setName((String)session.getAttribute("name"));
-            Calendar birthday = Calendar.getInstance();
+            userdata.setName(udb.getName());
             userdata.setBirthday(birthday.getTime());
-            userdata.setType(Integer.parseInt((String)session.getAttribute("type")));
-            userdata.setTell((String)session.getAttribute("tell"));
-            userdata.setComment((String)session.getAttribute("comment"));
+            userdata.setType(udb.getType());
+            userdata.setTell(udb.getTell());
+            userdata.setComment(udb.getComment());
             
             //DBへデータの挿入
             UserDataDAO .getInstance().insert(userdata);
