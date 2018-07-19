@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -27,19 +29,24 @@ public class SearchResult extends HttpServlet {
             throws ServletException, IOException {
         try{
             request.setCharacterEncoding("UTF-8");//リクエストパラメータの文字コードをUTF-8に変更
-        
+            HttpSession hss = request.getSession();
             //フォームからの入力を取得して、JavaBeansに格納
             UserDataBeans udb = new UserDataBeans();
-            udb.setName(request.getParameter("name"));
-            udb.setYear(request.getParameter("year"));
-            udb.setType(request.getParameter("type"));
-
+            
+            if(request.getParameter("mode") != null && request.getParameter("mode").equals("DeleteResult")){
+                udb = (UserDataBeans)hss.getAttribute("search");
+            }else{
+                udb.setName(request.getParameter("name"));
+                udb.setYear(request.getParameter("year"));
+                udb.setType(request.getParameter("type"));
+                hss.setAttribute("search", udb);
+            }
             //DTOオブジェクトにマッピング。DB専用のパラメータに変換
             UserDataDTO searchData = new UserDataDTO();
             udb.UD2DTOMapping(searchData);
 
-            UserDataDTO resultData = UserDataDAO .getInstance().search(searchData);
-            request.setAttribute("resultData", resultData);
+            ArrayList resultData = UserDataDAO .getInstance().search(searchData);
+            hss.setAttribute("resultData", resultData);
             
             request.getRequestDispatcher("/searchresult.jsp").forward(request, response);  
         }catch(Exception e){

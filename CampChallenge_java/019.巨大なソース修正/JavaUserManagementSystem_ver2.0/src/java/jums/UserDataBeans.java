@@ -10,23 +10,15 @@ import java.util.Calendar;
  * @author hayashi-s
  */
 public class UserDataBeans implements Serializable{
-    private String name;
-    private int year;
-    private int month;
-    private int day;
-    private String tell;
-    private int type ;
-    private String comment;
+    private String name = "";
+    private int year = 0;
+    private int month = 0;
+    private int day = 0;
+    private String tell = "";
+    private int type = 0;
+    private String comment = "";
     
-    public UserDataBeans(){
-        this.name = "";
-        this.year = 0;
-        this.month = 0;
-        this.day = 0;
-        this.tell = "";
-        this.type = 0;
-        this.comment= "";
-    }
+    public UserDataBeans(){}
     
     public String getName() {
         return name;

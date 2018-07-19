@@ -63,9 +63,9 @@ public class JumsHelper {
     public String exTypenum(int i){
         switch(i){
             case 1:
-                return "営業";
-            case 2:
                 return "エンジニア";
+            case 2:
+                return "営業";
             case 3:
                 return "その他";
         }

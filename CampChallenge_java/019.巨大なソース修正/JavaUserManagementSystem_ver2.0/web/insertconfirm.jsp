@@ -25,6 +25,7 @@
         電話番号:<%= udb.getTell()%><br>
         自己紹介:<%= udb.getComment()%><br>
         上記の内容で登録します。よろしいですか？
+        <br>
         <form action="insertresult" method="POST">
             <input type="hidden" name="ac"  value="<%= hs.getAttribute("ac")%>">
             <input type="submit" name="yes" value="はい">
@@ -37,6 +38,7 @@
             <input type="submit" name="no" value="登録画面に戻る">
             <input type="hidden" name="mode" value="REINPUT">
         </form>
+        <br>
         <%=jh.home()%>
     </body>
 </html>

@@ -1,5 +1,4 @@
-<%@page import="javax.servlet.http.HttpSession"
-        import="jums.JumsHelper"
+<%@page import="jums.JumsHelper"
         import="jums.UserDataBeans" %>
 <%
     JumsHelper jh = JumsHelper.getInstance();
@@ -20,6 +19,7 @@
         電話番号:<%= udb.getTell()%><br>
         自己紹介:<%= udb.getComment()%><br>
         以上の内容で登録しました。<br>
+        <br>
     </body>
     <%=jh.home()%>
 </html>

@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 
 /**
  *
@@ -26,13 +28,27 @@ public class ResultDetail extends HttpServlet {
             throws ServletException, IOException {
         try{
             request.setCharacterEncoding("UTF-8");//リクエストパラメータの文字コードをUTF-8に変更
-
+            
             //DTOオブジェクトにマッピング。DB専用のパラメータに変換
             UserDataDTO searchData = new UserDataDTO();
-            searchData.setUserID(2);
+            UserDataBeans udb = new UserDataBeans();
+            udb.UD2DTOMapping(searchData);
+            String userID;
+            if(request.getParameter("mode") != null &&  request.getParameter("mode").equals("Update") ){
+                userID = request.getParameter("useID");
+            }else if(request.getParameter("mode") != null &&  request.getParameter("mode").equals("UpdateResult") ){
+                userID = request.getParameter("userID");
+            }else if(request.getParameter("mode") != null &&  request.getParameter("mode").equals("Delete") ){
+                userID = request.getParameter("userID");
+            }else{
+                userID = request.getParameter("id");
+            }
+            searchData.setUserID(Integer.parseInt(userID));
 
             UserDataDTO resultData = UserDataDAO .getInstance().searchByID(searchData);
-            request.setAttribute("resultData", resultData);
+            
+            HttpSession hs = request.getSession();
+            hs.setAttribute("resultData", resultData);
             
             request.getRequestDispatcher("/resultdetail.jsp").forward(request, response);  
         }catch(Exception e){
